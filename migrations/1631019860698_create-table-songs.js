@@ -26,7 +26,7 @@ exports.up = (pgm) => {
     duration: {
       type: 'int',
     },
-    created_at: {
+    inserted_at: {
       type: 'TEXT',
       notNull: true,
     },

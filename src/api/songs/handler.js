@@ -16,14 +16,14 @@ class SongsHandler {
     try {
       this._validator.validateSongPayload(request.payload);
       const {
-        title = 'untitled', year, performer, genre, duration,
+        title, year, performer, genre, duration,
       } = request.payload;
       const songId = await this._service.addSong({
         title, year, performer, genre, duration,
       });
       const response = h.response({
         status: 'success',
-        message: 'lagu berhasil ditambahkan',
+        message: 'Lagu berhasil ditambahkan',
         data: {
           songId,
         },
@@ -51,14 +51,21 @@ class SongsHandler {
     }
   }
 
-  async getSongsHandler() {
+  async getSongsHandler(h) {
     const songs = await this._service.getSongs();
-    return {
+
+    const response = h.response({
       status: 'success',
       data: {
-        songs,
+        songs: songs.map((song) => ({
+          id: song.id,
+          title: song.title,
+          performer: song.performer,
+        })),
       },
-    };
+    });
+    response.code(200);
+    return response;
   }
 
   async getSongByIdHandler(request, h) {
